@@ -1,9 +1,5 @@
 # Portfolio — Adrien Derrey
 
-Dossier professionnel en page unique, dans l'esprit d'un dossier d'employé
-classifié. Voir [`PORTFOLIO_BRIEF.md`](./PORTFOLIO_BRIEF.md) pour le concept,
-la direction artistique et les garde-fous.
-
 ## Démarrer
 
 ```bash
@@ -14,35 +10,6 @@ npm run preview    # sert out/ tel quel, pour vérifier le rendu de production
 npm run lint
 npm run typecheck
 ```
-
-## État d'avancement
-
-| Section                   | État                                         |
-| ------------------------- | -------------------------------------------- |
-| 0. Écran d'accès          | fait                                          |
-| 1. Fiche d'identité       | fait                                          |
-| 2. Opérations             | fait (contenu à compléter)                    |
-| 3. Modules installés      | fait                                          |
-| 4. Transmission           | fait                                          |
-
-### À compléter avant mise en ligne
-
-Tout est regroupé dans [`src/lib/profile.ts`](./src/lib/profile.ts) :
-
-- l'adresse e-mail (`contact@adrienderrey.fr` est un placeholder) ;
-- l'URL exacte du profil LinkedIn ;
-- le domaine de production, s'il diffère ;
-- le CV : déposer le PDF en `public/cv/adrien-derrey-cv.pdf`. Tant qu'il est
-  absent, le bouton « Télécharger le CV » pointe dans le vide.
-
-Côté contenu, les fiches Opérations (`operations.items` dans
-[`src/lib/i18n/dictionary.ts`](./src/lib/i18n/dictionary.ts)) n'affichent que
-ce que le brief établit : `role` et `result` sont absents pour OP-02 et OP-03,
-`role` pour OP-01. Un champ absent n'est pas affiché ; le renseigner suffit
-à le faire apparaître, en FR et en EN.
-
-Le nom d'en-tête « NIVIFERUM SYSTEMS » était marqué « à valider » dans le
-brief ; il est en place, à confirmer ou remplacer dans les dictionnaires.
 
 ## Architecture
 
@@ -99,7 +66,6 @@ décalée d'1px pour le remplissage.
   que JavaScript ne s'exécute.
 - Éléments décoratifs (codes de référence, tampon, lignes de balayage) :
   `aria-hidden`.
-- Aucun emoji, nulle part — les pictogrammes sont des SVG écrits à la main.
 
 ### En-têtes HTTP
 
