@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "build": "next build && node scripts/build-headers.mjs",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "preview": "npx --yes serve out"
   },
   "dependencies": {
     "next": "16.3.8",

@@ -1,0 +1,387 @@
+/* ---------------------------------------------------------------------------
+   Opérations — une fiche dépliable par mission.
+
+   Motif de divulgation : bouton `aria-expanded` dans le titre, détail rendu
+   `inert` quand il est replié. Le dépliage anime `grid-template-rows`
+   (0fr -> 1fr), la découpe de la fiche s'élargit à l'ouverture.
+   --------------------------------------------------------------------------- */
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding: var(--s-8) var(--shell-pad);
+}
+
+.shell {
+  display: grid;
+  gap: var(--s-7);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+}
+
+/* --- En-tête de section -------------------------------------------------- */
+
+.ref {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.refRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--c-rule-strong), transparent);
+}
+
+.title {
+  font-size: var(--t-h2);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+}
+
+.intro {
+  margin-top: var(--s-4);
+  max-width: 52ch;
+  color: var(--c-ash);
+  text-wrap: pretty;
+}
+
+/* --- Liste des fiches ---------------------------------------------------- */
+
+.list {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  --cut: var(--chamfer);
+  position: relative;
+  /* Couche du liseré : le remplissage est porté par `.fill`. */
+  background: var(--c-rule);
+  transition:
+    --cut var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out);
+}
+
+.card:hover,
+.card:focus-within {
+  --cut: 22px;
+  background: var(--c-rule-strong);
+}
+
+/* Ouverte, la fiche prend la coupe large des grands panneaux et un liseré
+   rouge : c'est le document consulté. */
+.card[data-open="true"] {
+  --cut: var(--chamfer-lg);
+  background: var(--c-signal-deep);
+}
+
+.fill {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(160deg, var(--c-graphite) 0%, var(--c-carbon) 70%);
+}
+
+/* --- Déclencheur --------------------------------------------------------- */
+
+.heading {
+  position: relative;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.trigger {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "code name toggle"
+    "meta meta meta";
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+  width: 100%;
+  padding: var(--s-5);
+  text-align: left;
+}
+
+@media (max-width: 47.99rem) {
+  .trigger {
+    padding: var(--s-4);
+  }
+
+  .body {
+    margin-inline: var(--s-4);
+  }
+}
+
+@media (min-width: 48rem) {
+  .trigger {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "code name meta toggle";
+  }
+}
+
+/* `clip-path` rogne aussi le contour : l'anneau de focus est donc tracé à
+   l'intérieur de la fiche, en retrait des angles coupés. */
+.trigger:focus-visible {
+  outline-offset: -8px;
+}
+
+.code {
+  grid-area: code;
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: var(--ls-mono);
+  color: var(--c-signal);
+}
+
+.name {
+  grid-area: name;
+  font-size: var(--t-h3);
+  font-weight: 600;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  font-weight: 400;
+  text-transform: none;
+  color: var(--c-ash);
+}
+
+/* Petits écrans : le sous-titre passe sous le nom, en taille de texte. */
+@media (max-width: 47.99rem) {
+  .subtitle {
+    display: block;
+    margin-top: 2px;
+    font-size: var(--t-body);
+    letter-spacing: 0;
+  }
+
+  .dash {
+    display: none;
+  }
+}
+
+.meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-4);
+}
+
+.mission {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 1px var(--s-2);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-signal);
+  border: 1px solid var(--c-signal-deep);
+  background: var(--c-signal-wash);
+}
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--c-signal);
+  border-radius: 50%;
+  animation: pulse 2.4s var(--e-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Plus -> moins : le trait vertical se replie à l'ouverture. */
+.toggle {
+  grid-area: toggle;
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+.toggle::before,
+.toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1.5px;
+  translate: 0 -50%;
+  background: var(--c-ash);
+  transition:
+    rotate var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out);
+}
+
+.toggle::after {
+  rotate: 90deg;
+}
+
+.card[data-open="true"] .toggle::after {
+  rotate: 0deg;
+}
+
+.card:hover .toggle::before,
+.card:hover .toggle::after,
+.card[data-open="true"] .toggle::before,
+.card[data-open="true"] .toggle::after {
+  background: var(--c-signal);
+}
+
+/* --- Détail -------------------------------------------------------------- */
+
+/* Replié : hauteur nulle, puis masqué une fois la transition terminée
+   (`visibility` bascule en fin de course). Déplié : visible d'emblée. */
+.detail {
+  position: relative;
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--d-slow) var(--e-out),
+    visibility 0s linear var(--d-slow);
+}
+
+.card[data-open="true"] .detail {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--d-slow) var(--e-out),
+    visibility 0s;
+}
+
+.detailInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.body {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-5);
+  margin-inline: var(--s-5);
+  padding: var(--s-5) 0 var(--s-6);
+  border-top: 1px solid var(--c-rule-strong);
+}
+
+.fields {
+  display: grid;
+  gap: var(--s-4);
+  width: 100%;
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: var(--s-1);
+}
+
+@media (min-width: 48rem) {
+  .field {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--s-5);
+  }
+}
+
+.field dt {
+  padding-top: 0.2em;
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+}
+
+.field dd {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--c-bone);
+  text-wrap: pretty;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 2px var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  color: var(--c-bone);
+  border: 1px solid var(--c-rule-strong);
+  background: var(--c-void);
+}
+
+/* --- Lien externe -------------------------------------------------------- */
+
+.visit {
+  --cut: 8px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-signal);
+  background: var(--c-signal-deep);
+  transition: --cut var(--d-base) var(--e-out);
+}
+
+.visit:hover,
+.visit:focus-visible {
+  --cut: 14px;
+}
+
+.visitFill {
+  background: var(--c-graphite);
+}
+
+.visitLabel,
+.visitIcon {
+  position: relative;
+}

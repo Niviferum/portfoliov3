@@ -1,0 +1,28 @@
+.toggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+  border: 1px solid var(--c-rule);
+  background: var(--c-carbon);
+  transition:
+    color var(--d-fast) var(--e-out),
+    border-color var(--d-fast) var(--e-out),
+    background-color var(--d-fast) var(--e-out);
+}
+
+.toggle:hover {
+  color: var(--c-bone);
+  border-color: var(--c-rule-strong);
+  background: var(--c-graphite);
+}
+
+/* Glyphe de bascule — décoratif, doublé par le libellé lisible du bouton. */
+.mark {
+  color: var(--c-signal);
+}

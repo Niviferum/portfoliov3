@@ -1,0 +1,293 @@
+/* ---------------------------------------------------------------------------
+   Transmission — canaux de contact.
+
+   Un canal prioritaire (e-mail : écrire ou copier l'adresse) et trois canaux
+   secondaires (GitHub, LinkedIn, CV). Export statique : pas de formulaire.
+   --------------------------------------------------------------------------- */
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding: var(--s-8) var(--shell-pad) var(--s-7);
+}
+
+.shell {
+  display: grid;
+  gap: var(--s-7);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+}
+
+/* --- En-tête de section -------------------------------------------------- */
+
+.ref {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.refRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--c-rule-strong), transparent);
+}
+
+.title {
+  font-size: var(--t-h2);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+}
+
+.intro {
+  margin-top: var(--s-4);
+  max-width: 52ch;
+  color: var(--c-ash);
+  text-wrap: pretty;
+}
+
+/* --- Disposition --------------------------------------------------------- */
+
+.layout {
+  display: grid;
+  gap: var(--s-4);
+}
+
+@media (min-width: 60rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+.code {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  color: var(--c-signal);
+}
+
+.glyph,
+.label {
+  position: relative;
+  flex: none;
+}
+
+/* --- Canal prioritaire --------------------------------------------------- */
+
+.primary {
+  --cut: var(--chamfer-lg);
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: var(--s-4);
+  padding: var(--s-6) var(--s-5);
+  background: var(--c-signal-deep);
+}
+
+.primaryFill {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(160deg, var(--c-slate) 0%, var(--c-carbon) 70%);
+}
+
+.primaryLabel {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+}
+
+.address {
+  position: relative;
+  font-family: var(--f-mono);
+  font-size: var(--t-h3);
+  color: var(--c-bone);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.primaryActions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+.write,
+.copy {
+  --cut: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    --cut var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out);
+}
+
+.write:hover,
+.write:focus-visible,
+.copy:hover,
+.copy:focus-visible {
+  --cut: 22px;
+}
+
+.write {
+  color: var(--c-void);
+  background: var(--c-signal);
+}
+
+.writeFill {
+  background: var(--c-signal);
+}
+
+.write:hover,
+.write:focus-visible {
+  background: #ff5a50;
+}
+
+.write:hover .writeFill,
+.write:focus-visible .writeFill {
+  background: #ff5a50;
+}
+
+.copy {
+  color: var(--c-bone);
+  background: var(--c-rule-strong);
+}
+
+.copyFill {
+  background: var(--c-graphite);
+}
+
+.copy:hover,
+.copy:focus-visible {
+  background: var(--c-signal-deep);
+}
+
+.copyStatus {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-signal);
+}
+
+.copyStatus:empty {
+  display: none;
+}
+
+/* --- Canaux secondaires -------------------------------------------------- */
+
+.channels {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.channel {
+  --cut: var(--chamfer);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  height: 100%;
+  padding: var(--s-4) var(--s-5);
+  text-decoration: none;
+  color: var(--c-ash);
+  background: var(--c-rule);
+  transition:
+    --cut var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out),
+    color var(--d-fast) var(--e-out);
+}
+
+.channel:hover,
+.channel:focus-visible {
+  --cut: 22px;
+  color: var(--c-signal);
+  background: var(--c-signal-deep);
+}
+
+/* `clip-path` rogne le contour extérieur : anneau tracé à l'intérieur. */
+.channel:focus-visible {
+  outline-offset: -6px;
+}
+
+.channelFill {
+  background: var(--c-graphite);
+}
+
+.channel .code {
+  position: relative;
+}
+
+.channelText {
+  position: relative;
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.channelLabel {
+  font-size: var(--t-body);
+  font-weight: 600;
+  color: var(--c-bone);
+}
+
+.channelValue {
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.04em;
+  color: var(--c-ash);
+  overflow-wrap: anywhere;
+}
+
+/* --- Fin du dossier ------------------------------------------------------ */
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.endRule {
+  flex: 1;
+  height: 1px;
+  background: var(--c-rule);
+}

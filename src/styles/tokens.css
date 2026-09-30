@@ -1,0 +1,86 @@
+/* ---------------------------------------------------------------------------
+   Jetons de design — NIVIFERUM SYSTEMS
+   Palette : noir profond / anthracite + un seul rouge.
+   Les contrastes texte sont verifies >= 4.5:1 sur --c-void.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces */
+  --c-void: #08090a;
+  --c-carbon: #0e1013;
+  --c-graphite: #15181c;
+  --c-slate: #1e2227;
+
+  /* Traits */
+  --c-rule: #24292f;
+  --c-rule-strong: #333a42;
+
+  /* Textes */
+  --c-bone: #e6e9ec; /* 15.9:1 sur --c-void */
+  --c-ash: #9aa1a8; /* 7.2:1  sur --c-void */
+  --c-ash-dim: #6d757d; /* 3.6:1 — decor et texte non essentiel uniquement */
+
+  /* Accent unique */
+  --c-signal: #ff3b30; /* 5.6:1 sur --c-void */
+  --c-signal-deep: #8e1a13; /* liserés, jamais du texte */
+  --c-signal-wash: rgba(255, 59, 48, 0.08);
+
+  /* Typographies */
+  --f-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --f-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Echelle typographique */
+  --t-micro: 0.6875rem;
+  --t-meta: 0.75rem;
+  --t-body: 1rem;
+  --t-lead: 1.125rem;
+  --t-h3: clamp(1.1rem, 0.9rem + 0.8vw, 1.5rem);
+  --t-h2: clamp(1.5rem, 1.1rem + 1.8vw, 2.5rem);
+  --t-display: clamp(2.25rem, 1.2rem + 5vw, 5.5rem);
+
+  --ls-mono: 0.14em;
+  --ls-display: -0.02em;
+
+  /* Rythme */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
+
+  --shell-max: 76rem;
+  --shell-pad: clamp(1rem, 5vw, 3.5rem);
+
+  /* Chanfrein : rayon de coupe des angles, partage par shape() et polygon() */
+  --chamfer: 14px;
+  --chamfer-lg: 26px;
+
+  /* Cadences */
+  --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --e-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --e-sas: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --d-fast: 160ms;
+  --d-base: 320ms;
+  --d-slow: 620ms;
+}
+
+/* Petits écrans : texte courant et rythme resserrés. Les titres gardent leur
+   hiérarchie, seul leur minimum baisse. */
+@media (max-width: 47.99rem) {
+  :root {
+    --t-body: 0.9375rem;
+    --t-lead: 1rem;
+    --t-h3: 1.0625rem;
+    --t-h2: 1.375rem;
+    --t-display: 2rem;
+
+    --s-6: 1.5rem;
+    --s-7: 2rem;
+    --s-8: 3rem;
+  }
+}

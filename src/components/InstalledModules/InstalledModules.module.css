@@ -1,0 +1,307 @@
+/* ---------------------------------------------------------------------------
+   Modules installés — la stack, par catégorie.
+
+   Aucun niveau de maîtrise affiché. Un sélecteur d'opération allume les
+   modules qu'elle a mobilisés et estompe les autres. Le texte est lisible dans l'état non animé : l'effet au
+   défilement ne touche que la découpe des panneaux, jamais leur opacité.
+   --------------------------------------------------------------------------- */
+
+.section {
+  position: relative;
+  z-index: 1;
+  padding: var(--s-8) var(--shell-pad);
+}
+
+.shell {
+  display: grid;
+  gap: var(--s-7);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+}
+
+/* --- En-tête de section -------------------------------------------------- */
+
+.ref {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.refRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--c-rule-strong), transparent);
+}
+
+.title {
+  font-size: var(--t-h2);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+}
+
+.intro {
+  margin-top: var(--s-4);
+  max-width: 52ch;
+  color: var(--c-ash);
+  text-wrap: pretty;
+}
+
+/* --- Sélecteur d'opération --------------------------------------------- */
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+}
+
+.choice {
+  --cut: 8px;
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-4);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+  /* Couleur du liseré ; le remplissage est porté par `.choiceFill`. */
+  background: var(--c-rule-strong);
+  transition:
+    --cut var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out),
+    color var(--d-fast) var(--e-out);
+}
+
+.choiceFill {
+  background: var(--c-graphite);
+  transition: background-color var(--d-fast) var(--e-out);
+}
+
+/* Même geste que les actions de la fiche : la coupe d'angle s'ouvre. */
+.choice:hover,
+.choice:focus-visible {
+  --cut: 14px;
+  color: var(--c-bone);
+}
+
+.choice[aria-pressed="true"] {
+  --cut: 14px;
+  color: var(--c-signal);
+  background: var(--c-signal-deep);
+}
+
+.choice[aria-pressed="true"] .choiceFill {
+  background: var(--c-slate);
+}
+
+.choiceCode,
+.choiceLabel {
+  position: relative;
+}
+
+.choiceCode {
+  font-size: var(--t-micro);
+  opacity: 0.6;
+}
+
+.status {
+  margin-top: var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash);
+}
+
+/* --- Grille des catégories ---------------------------------------------- */
+
+.grid {
+  display: grid;
+  gap: var(--s-5);
+}
+
+/* Deux colonnes : les frameworks, liste la plus longue, occupent la droite ;
+   les trois autres catégories s'empilent à gauche. */
+@media (min-width: 52rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .category[data-category="frameworks"] {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+}
+
+/* --- Panneau de catégorie ------------------------------------------------ */
+
+.category {
+  --cut: var(--chamfer-lg);
+  position: relative;
+  padding: var(--s-5);
+  /* Couche du liseré : le remplissage est porté par `.fill`. */
+  background: var(--c-rule);
+}
+
+.fill {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.025) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(160deg, var(--c-graphite) 0%, var(--c-carbon) 70%);
+}
+
+.categoryHead {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  padding-bottom: var(--s-4);
+  margin-bottom: var(--s-2);
+  border-bottom: 1px solid var(--c-rule-strong);
+}
+
+.index {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  color: var(--c-signal);
+}
+
+.categoryTitle {
+  font-size: var(--t-h3);
+  font-weight: 600;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+}
+
+.count {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+/* --- Modules ------------------------------------------------------------- */
+
+.list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.module {
+  /* Retrait négatif : le fond d'un module allumé déborde légèrement du
+     texte sans décaler l'alignement de la liste. */
+  margin-inline: calc(-1 * var(--s-2));
+  padding: var(--s-2);
+  font-family: var(--f-mono);
+  color: var(--c-bone);
+  border-bottom: 1px solid var(--c-rule);
+  transition:
+    color var(--d-base) var(--e-out),
+    background-color var(--d-base) var(--e-out),
+    box-shadow var(--d-base) var(--e-out);
+}
+
+.module:last-child {
+  border-bottom: none;
+}
+
+/* Petits écrans : noms courts, deux colonnes par panneau. */
+@media (max-width: 47.99rem) {
+  .category {
+    padding: var(--s-4);
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s-4);
+  }
+
+  .module {
+    overflow-wrap: anywhere;
+  }
+
+  /* Pas de filet sous le dernier rang, qu'il soit complet ou non. */
+  .module:last-child,
+  .module:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+}
+
+.module::before {
+  content: "› ";
+  color: var(--c-signal-deep);
+  transition: color var(--d-base) var(--e-out);
+}
+
+/* Filtre actif : les modules de l'opération s'allument, les autres
+   s'estompent sans disparaître. */
+.module[data-state="lit"] {
+  background-color: var(--c-signal-wash);
+  box-shadow: inset 2px 0 0 var(--c-signal);
+}
+
+.module[data-state="lit"]::before {
+  color: var(--c-signal);
+}
+
+/* Contraste 3,6:1, sous le seuil AA : choix assumé, le retrait visuel est
+   l'information. Le texte reste restitué et le statut est annoncé. */
+.module[data-state="dim"] {
+  color: var(--c-ash-dim);
+}
+
+.module[data-state="dim"]::before {
+  color: var(--c-rule-strong);
+}
+
+/* --- Découpe au défilement ----------------------------------------------- */
+
+/* En entrant dans la vue, le chanfrein du panneau se referme sur sa taille
+   de repos : `--cut` est typée (`@property`), donc `shape()` s'interpole.
+   Sans support des timelines de défilement, le panneau reste simplement à
+   sa découpe de repos. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .category {
+      animation: category-cut linear both;
+      /* Après le raccourci `animation`, qui réinitialise la timeline. */
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+  }
+}
+
+/* 48px au plus : au-delà, la coupe mord sur la référence MOD-XX, placée
+   à l'angle, pendant que le panneau entre dans la vue. */
+@keyframes category-cut {
+  from {
+    --cut: 48px;
+  }
+  to {
+    --cut: var(--chamfer-lg);
+  }
+}

@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Export statique : un fichier HTML par route, hebergeable sur n'importe
+  // quel serveur de fichiers. Les en-tetes de securite sont declares cote
+  // hebergeur (voir public/_headers), `headers()` n'a aucun effet ici.
+  output: "export",
+  trailingSlash: true,
+  images: { unoptimized: true },
   reactCompiler: true,
+  poweredByHeader: false,
 };
 
 export default nextConfig;

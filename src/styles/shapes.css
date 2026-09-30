@@ -1,0 +1,126 @@
+/* ---------------------------------------------------------------------------
+   Signature `shape()` — decoupes chanfreinees animables.
+
+   Regle de construction :
+   1. la variante `polygon()` est ecrite en base (support universel) ;
+   2. la variante `shape()` est ajoutee dans `@supports`, avec exactement
+      la meme sequence de commandes entre tous les etats — condition de
+      l'interpolation.
+   --------------------------------------------------------------------------- */
+
+/* Variables typees : sans `@property`, une custom property n'est pas animable. */
+@property --cut {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 14px;
+}
+
+@property --cut-lg {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 26px;
+}
+
+@property --sweep {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+:root {
+  --cut: var(--chamfer);
+  --cut-lg: var(--chamfer-lg);
+}
+
+/* ---------------------------------------------------------------------------
+   Plaque : angles haut-gauche et bas-droit coupes. Le motif de reference
+   du dossier.
+   --------------------------------------------------------------------------- */
+
+.plate {
+  clip-path: polygon(
+    0 var(--cut),
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%
+  );
+}
+
+@supports (clip-path: shape(from 0 0, line to 0 0)) {
+  .plate {
+    clip-path: shape(
+      from 0 var(--cut),
+      line to var(--cut) 0,
+      line to 100% 0,
+      line to 100% calc(100% - var(--cut)),
+      line to calc(100% - var(--cut)) 100%,
+      line to 0 100%,
+      close
+    );
+  }
+}
+
+/* L'animation se fait en transitionnant `--cut`, jamais `clip-path` lui-meme :
+   la forme est recalculee a chaque image et les deux ne se chevauchent pas. */
+
+/* Plaque a coupe large, pour les grands panneaux. */
+.plate-lg {
+  --cut: var(--cut-lg);
+}
+
+/* ---------------------------------------------------------------------------
+   Liseré d'une plaque chanfreinee.
+
+   `border` et `box-shadow: inset` sont rognes par `clip-path` : le trait
+   disparait justement sur les aretes coupees. On empile donc deux plaques —
+   la parente porte la couleur du trait, l'enfant decalee d'1px porte le
+   remplissage. Le contenu doit rester au-dessus (`position: relative`).
+   --------------------------------------------------------------------------- */
+
+.plate-fill {
+  position: absolute;
+  inset: 1px;
+  clip-path: inherit;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Onglet : coin superieur droit coupe, comme un intercalaire de dossier.
+   --------------------------------------------------------------------------- */
+
+.tab {
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    0 100%
+  );
+}
+
+@supports (clip-path: shape(from 0 0, line to 0 0)) {
+  .tab {
+    clip-path: shape(
+      from 0 0,
+      line to calc(100% - var(--cut)) 0,
+      line to 100% var(--cut),
+      line to 100% 100%,
+      line to 0 100%,
+      close
+    );
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Sas : profondeur du chevron de jointure des deux vantaux. Animable, donc
+   declaree via `@property` — c'est elle qui porte l'interpolation de
+   `clip-path` pendant l'ouverture.
+   --------------------------------------------------------------------------- */
+
+@property --seam {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 22px;
+}

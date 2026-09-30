@@ -1,0 +1,61 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: var(--s-4) var(--shell-pad);
+  border-bottom: 1px solid var(--c-rule);
+  background: color-mix(in srgb, var(--c-void) 82%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.org {
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-bone);
+}
+
+.tagline {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.aside {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+/* Code de référence : décor, retiré de la restitution vocale. */
+.ref {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+@media (max-width: 34rem) {
+  .ref {
+    display: none;
+  }
+
+  .tagline {
+    display: none;
+  }
+}

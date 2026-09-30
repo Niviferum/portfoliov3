@@ -1,0 +1,294 @@
+/* ---------------------------------------------------------------------------
+   Fiche d'identité — premier écran de lecture.
+
+   Priorité du brief : identité + actions lisibles en 5 secondes. Aucun effet
+   ne conditionne l'affichage du texte ; les animations d'entrée partent d'un
+   état déjà lisible et sont neutralisées par `prefers-reduced-motion`.
+   --------------------------------------------------------------------------- */
+
+.section {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  /* La fiche occupe l'écran restant sous l'en-tête : identité et actions
+     sont lues sans défilement. */
+  min-height: calc(100svh - 5.25rem);
+  padding: var(--s-7) var(--shell-pad) var(--s-8);
+}
+
+.shell {
+  display: grid;
+  gap: var(--s-7);
+  max-width: var(--shell-max);
+  margin-inline: auto;
+}
+
+@media (min-width: 60rem) {
+  .shell {
+    grid-template-columns: minmax(0, 1.5fr) minmax(19rem, 1fr);
+    align-items: start;
+    gap: var(--s-8);
+  }
+}
+
+/* --- Colonne principale -------------------------------------------------- */
+
+.ref {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.refRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--c-rule-strong), transparent);
+}
+
+.name {
+  font-size: var(--t-display);
+  font-weight: 650;
+  line-height: 0.94;
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--c-bone);
+  text-wrap: balance;
+}
+
+.role {
+  margin-top: var(--s-4);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-signal);
+}
+
+.summary {
+  margin-top: var(--s-5);
+  max-width: 46ch;
+  font-size: var(--t-lead);
+  color: var(--c-ash);
+  text-wrap: pretty;
+}
+
+/* --- Actions ------------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+.action {
+  --cut: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
+  font-weight: 600;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  /* Couleur du liseré ; le remplissage est porté par `.actionFill`. */
+  background: var(--c-rule-strong);
+  transition:
+    --cut var(--d-base) var(--e-out),
+    background-color var(--d-fast) var(--e-out),
+    color var(--d-fast) var(--e-out);
+}
+
+/* Au survol, la coupe d'angle s'ouvre : c'est `--cut` qui s'interpole, la
+   séquence de commandes de `shape()` reste identique entre les deux états. */
+.action:hover,
+.action:focus-visible {
+  --cut: 22px;
+}
+
+.actionFill {
+  transition: background-color var(--d-fast) var(--e-out);
+}
+
+/* Le contenu doit rester au-dessus du remplissage, qui est positionné. */
+.actionIcon,
+.actionLabel,
+.actionHint {
+  position: relative;
+}
+
+.actionPrimary {
+  color: var(--c-void);
+  background: var(--c-signal);
+}
+
+.actionPrimary .actionFill {
+  background: var(--c-signal);
+}
+
+.actionPrimary:hover,
+.actionPrimary:focus-visible {
+  background: #ff5a50;
+}
+
+.actionPrimary:hover .actionFill,
+.actionPrimary:focus-visible .actionFill {
+  background: #ff5a50;
+}
+
+.actionSecondary {
+  color: var(--c-bone);
+}
+
+.actionSecondary .actionFill {
+  background: var(--c-graphite);
+}
+
+.actionSecondary:hover,
+.actionSecondary:focus-visible {
+  background: var(--c-signal-deep);
+}
+
+.actionSecondary:hover .actionFill,
+.actionSecondary:focus-visible .actionFill {
+  background: var(--c-slate);
+}
+
+.actionHint {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.actionIcon {
+  flex: none;
+}
+
+/* --- Panneau de données -------------------------------------------------- */
+
+.panel {
+  --cut: var(--chamfer-lg);
+  position: relative;
+  /* Marge basse réservée au tampon, qui ne doit jamais recouvrir une donnée. */
+  padding: var(--s-6) var(--s-5) var(--s-8);
+  /* Couche du liseré : le remplissage est porté par `.fill` juste en dessous. */
+  background: var(--c-rule);
+}
+
+/* Remplissage et lignes de balayage : pur décor, masqués à la restitution. */
+.fill {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03) 0 1px,
+      transparent 1px 4px
+    ),
+    linear-gradient(
+      160deg,
+      var(--c-graphite) 0%,
+      var(--c-carbon) 55%,
+      var(--c-void) 100%
+    );
+}
+
+.panelHead {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-5);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.fields {
+  position: relative;
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  gap: var(--s-1);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.field:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.fieldLabel {
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-ash-dim);
+}
+
+.fieldValue {
+  margin: 0;
+  font-size: var(--t-body);
+  color: var(--c-bone);
+}
+
+/* La valeur du statut porte le seul rouge du panneau. */
+.field:first-child .fieldValue {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  color: var(--c-signal);
+  font-weight: 600;
+}
+
+.pulse {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--c-signal);
+  border-radius: 50%;
+  animation: pulse 2.4s var(--e-out) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* --- Tampon -------------------------------------------------------------- */
+
+.stamp {
+  position: absolute;
+  right: var(--s-5);
+  bottom: var(--s-5);
+  padding: 2px var(--s-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--c-signal-deep);
+  border: 1px solid var(--c-signal-deep);
+  transform: rotate(-4deg);
+  opacity: 0.85;
+}
