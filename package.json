@@ -7,12 +7,14 @@
     "build": "next build && node scripts/build-headers.mjs",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "preview": "npx --yes serve out"
+    "preview": "serve out",
+    "start": "serve out -l tcp://0.0.0.0:${PORT:-3000}"
   },
   "dependencies": {
     "next": "16.3.8",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "serve": "^14.2.6"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -22,5 +24,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

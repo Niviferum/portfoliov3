@@ -7,6 +7,7 @@ npm install
 npm run dev        # serveur de développement
 npm run build      # export statique dans out/ + génération de out/_headers
 npm run preview    # sert out/ tel quel, pour vérifier le rendu de production
+npm start          # idem sur $PORT (3000 par défaut) : commande de production
 npm run lint
 npm run typecheck
 ```
@@ -67,11 +68,25 @@ décalée d'1px pour le remplissage.
 - Éléments décoratifs (codes de référence, tampon, lignes de balayage) :
   `aria-hidden`.
 
+### Déploiement (Railway)
+
+Railway construit avec `npm run build` puis lance `npm start` : `serve` sert
+`out/` sur le port donné par la variable `PORT`.
+
+1. Service créé depuis le dépôt GitHub, variable `PORT=3000`.
+2. *Settings > Networking > Custom Domain* : saisir le domaine, port cible
+   `3000`, puis créer chez le registraire l'enregistrement DNS indiqué par
+   Railway.
+3. Reporter le domaine dans `PROFILE.siteUrl` (`src/lib/profile.ts`) : il sert
+   aux URL canoniques et aux aperçus de liens.
+
 ### En-têtes HTTP
 
 Sans serveur, les en-têtes relèvent de l'hébergeur.
-[`scripts/build-headers.mjs`](./scripts/build-headers.mjs) écrit `out/_headers`
-après chaque build, au format Netlify / Cloudflare Pages.
+[`scripts/build-headers.mjs`](./scripts/build-headers.mjs) écrit après chaque
+build `out/_headers` (format Netlify / Cloudflare Pages) et `out/serve.json`,
+lu par `serve` en production. Ce dernier porte une CSP unique qui réunit les
+empreintes de toutes les pages.
 
 Next émet deux scripts inline par page (la charge utile RSC) et aucun `nonce`
 n'est possible sans serveur : le script calcule leur empreinte SHA-256 à chaque

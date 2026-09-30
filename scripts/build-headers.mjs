@@ -133,7 +133,30 @@ async function main() {
 
   await writeFile(join(OUT_DIR, "_headers"), `${banner}${blocks.join("\n\n")}\n`, "utf8");
 
-  console.log(`_headers écrit — ${pages.length} page(s) couverte(s).`);
+  // `serve` (déploiement Railway) ne lit pas `_headers` : même politique au
+  // format `serve.json`, avec une CSP unique qui réunit les empreintes de
+  // toutes les pages.
+  const allHashes = new Set();
+  for (const file of pages) {
+    for (const hash of inlineScriptHashes(await readFile(file, "utf8"))) {
+      allHashes.add(hash);
+    }
+  }
+  const serveConfig = {
+    trailingSlash: true,
+    headers: [
+      {
+        source: "**",
+        headers: [
+          ...COMMON_HEADERS,
+          ["Content-Security-Policy", cspDirectives([...allHashes])],
+        ].map(([key, value]) => ({ key, value })),
+      },
+    ],
+  };
+  await writeFile(join(OUT_DIR, "serve.json"), `${JSON.stringify(serveConfig, null, 2)}\n`, "utf8");
+
+  console.log(`_headers et serve.json écrits — ${pages.length} page(s) couverte(s).`);
 }
 
 await main();
