@@ -136,7 +136,7 @@ const fr: Dictionary = {
   meta: {
     title: "Adrien Derrey — Développeur web full stack",
     description:
-      "Dossier professionnel d'Adrien Derrey, développeur web full stack : TypeScript, React, Next.js, Node.js, NestJS, PostgreSQL. Disponible sur le Gard et Montpellier.",
+      "Dossier professionnel d'Adrien Derrey, développeur web full stack : TypeScript, React, Next.js, Node.js, NestJS, PostgreSQL. Disponible près de Rennes ou en Ille et Vilaine.",
   },
   shell: {
     skipToContent: "Aller au contenu principal",
@@ -169,7 +169,7 @@ const fr: Dictionary = {
     role: "Développeur web full stack",
     fields: [
       { label: "Statut", value: "Disponible pour affectation" },
-      { label: "Zone d'affectation", value: "Gard / Montpellier" },
+      { label: "Zone d'affectation", value: "Rennes / Ille et Vilaine" },
       { label: "Opérations au dossier", value: "03" },
     ],
     summary:
@@ -266,7 +266,7 @@ const en: Dictionary = {
   meta: {
     title: "Adrien Derrey — Full stack web developer",
     description:
-      "Professional file of Adrien Derrey, full stack web developer: TypeScript, React, Next.js, Node.js, NestJS, PostgreSQL. Available around Gard and Montpellier, France.",
+      "Professional file of Adrien Derrey, full stack web developer: TypeScript, React, Next.js, Node.js, NestJS, PostgreSQL. Available around Rennes and Ille et Vilaine, France.",
   },
   shell: {
     skipToContent: "Skip to main content",
@@ -295,7 +295,7 @@ const en: Dictionary = {
     role: "Full stack web developer",
     fields: [
       { label: "Status", value: "Available for assignment" },
-      { label: "Deployment zone", value: "Gard / Montpellier, France" },
+      { label: "Deployment zone", value: "Rennes / Ille et Vilaine, France" },
       { label: "Operations on file", value: "03" },
     ],
     summary:
